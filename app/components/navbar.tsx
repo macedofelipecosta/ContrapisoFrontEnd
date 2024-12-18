@@ -4,15 +4,18 @@ import React, { useState } from "react";
 import Link from "next/link";
 
 const NavBar = () => {
-  const [isMenuOpen, setMenuOpen] = useState(false);
+  const [isLanguageMenuOpen, setLanguageMenuOpen] = useState(false);
+
+  const handleLanguageSelect = (language: string) => {
+    alert(`Idioma seleccionado: ${language}`);
+    setLanguageMenuOpen(false); // Cierra el menú después de seleccionar
+  };
 
   return (
-    <nav className="bg-white border-gray-200 dark:bg-gray-900">
+    <nav className="bg-white border-gray-200 dark:bg-gray-900 relative">
       <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
-        <a
-          href="http://localhost:3000/"
-          className="flex items-center space-x-3 rtl:space-x-reverse"
-        >
+        {/* Logo */}
+        <Link href="/" className="flex items-center space-x-3 rtl:space-x-reverse">
           <img
             src="https://flowbite.com/docs/images/logo.svg"
             className="h-8"
@@ -21,12 +24,15 @@ const NavBar = () => {
           <span className="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">
             Contrapiso
           </span>
-        </a>
-        <div className="flex items-center md:order-2 space-x-1 md:space-x-0 rtl:space-x-reverse">
+        </Link>
+
+        {/* Idiomas */}
+        <div className="relative flex items-center md:order-2">
           <button
             type="button"
-            onClick={() => setMenuOpen(!isMenuOpen)}
+            onClick={() => setLanguageMenuOpen(!isLanguageMenuOpen)}
             className="inline-flex items-center font-medium justify-center px-4 py-2 text-sm text-gray-900 dark:text-white rounded-lg cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700 dark:hover:text-white"
+            aria-expanded={isLanguageMenuOpen}
           >
             <svg
               className="w-5 h-5 rounded-full me-3"
@@ -43,61 +49,76 @@ const NavBar = () => {
               />
               <path fill="#3c3b6e" d="M0 0h2964v2100H0z" />
               <g fill="#fff">
-                <g id="d">
-                  <path
-                    id="a"
-                    d="M247 90l70.534 217.082-184.66-134.164h228.253L176.466 307.082z"
-                  />
-                  <use xlinkHref="#a" y="420" />
-                  <use xlinkHref="#a" y="840" />
-                  <use xlinkHref="#a" y="1260" />
-                </g>
+                <path
+                  d="M247 90l70.534 217.082-184.66-134.164h228.253L176.466 307.082z"
+                />
               </g>
             </svg>
             English (US)
           </button>
+
+          {/* Dropdown para selección de idiomas */}
+          {isLanguageMenuOpen && (
+            <div
+              className="absolute right-0 mt-2 w-40 bg-white border border-gray-300 rounded-lg shadow-lg dark:bg-gray-800 dark:border-gray-700 z-50"
+            >
+              <ul className="py-2 text-sm text-gray-700 dark:text-gray-200">
+                <li>
+                  <button
+                    className="block w-full text-left px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700"
+                    onClick={() => handleLanguageSelect("Inglés (US)")}
+                  >
+                    English (US)
+                  </button>
+                </li>
+                <li>
+                  <button
+                    className="block w-full text-left px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700"
+                    onClick={() => handleLanguageSelect("Español")}
+                  >
+                    Español
+                  </button>
+                </li>
+                <li>
+                  <button
+                    className="block w-full text-left px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700"
+                    onClick={() => handleLanguageSelect("Francés")}
+                  >
+                    Français
+                  </button>
+                </li>
+              </ul>
+            </div>
+          )}
         </div>
-        <div
-          className={`${isMenuOpen ? "block" : "hidden"
-            } items-center justify-between w-full md:flex md:w-auto md:order-1`}
-          id="navbar-language"
-        >
-          <ul className="flex flex-col font-medium p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">
+
+        {/* Menú de navegación */}
+        <div className="items-center justify-between hidden w-full md:flex md:w-auto md:order-1">
+          <ul className="flex flex-row font-medium mt-0 space-x-8 rtl:space-x-reverse text-sm">
             <li>
-              <Link href="/" passHref>
-                
-                  Home
-                
+              <Link href="/" className="text-gray-900 dark:text-white hover:underline">
+                Home
               </Link>
             </li>
             <li>
-             <Link  href="/aboutUs" passHref>
-            About Us
-             </Link>
+              <Link href="/aboutUs" className="text-gray-900 dark:text-white hover:underline">
+                About Us
+              </Link>
             </li>
             <li>
-              <a
-                href="#"
-                className="block py-2 px-3 md:p-0 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700"
-              >
-                Services
-              </a>
+              <Link href="/artistas" className="text-gray-900 dark:text-white hover:underline">
+                Artistas
+              </Link>
             </li>
             <li>
-              <a
-                href="#"
-                className="block py-2 px-3 md:p-0 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700"
-              >
+              <Link href="/pricing" className="text-gray-900 dark:text-white hover:underline">
                 Pricing
-              </a>
+              </Link>
             </li>
             <li>
-              <a
-                href="#"
-                className="block py-2 px-3 md:p-0 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700"
-              >
+              <Link href="/contacto" className="text-gray-900 dark:text-white hover:underline">
                 Contact
-              </a>
+              </Link>
             </li>
           </ul>
         </div>
@@ -107,7 +128,3 @@ const NavBar = () => {
 };
 
 export default NavBar;
-
-
-
-
